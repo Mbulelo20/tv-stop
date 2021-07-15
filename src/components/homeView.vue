@@ -12,7 +12,8 @@
     <b-container>
     <div class="row" style="margin-bottom: 5em; margin-top: 3em">
         <div class="col-sm-4" v-for="movie in movies" :key="movie.id"> 
-          <router-link v-bind:to="'/movie/' + movie.id" style="color: #000000">      
+          <router-link v-bind:to="'/movie/' + movie.id" style="color: #000000"> 
+            <a target="_blank">
             <div class="row" style="margin-bottom: 5em">
               <div class="col-sm-5">
                 <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + movie.poster_path" style="width:175px;">
@@ -24,6 +25,7 @@
                 <p style="font-size:12px, text-align: bottom">Rating: {{movie.vote_average}}</p>
               </div>
             </div>
+            </a>
           </router-link>
         </div>
       </div>

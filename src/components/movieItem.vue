@@ -1,20 +1,16 @@
 <template> 
-  <div id="single-movie" :style="{backgroundColor: '#f5f5f5'}">
-    
+  <div id="single-movie">
     <div class="container">
       <center>
-        <div class="container row" style="margin-bottom: 3em">
-          <div class="col-sm-2" v-for="(image) in images" :key="image.id" style="margin: 0px auto">
-            <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + image.file_path" >              
-          </div>
-        </div>
-
-        <div class="container row" style="margin-bottom: 3em">
+        
+        <div class="container row" style="margin-bottom: 3em; margin-top: -3.5em">
+           
           <div class="col-sm-6" style="float: right">
             <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + movie.poster_path" style="width:25%, "/>
           </div>
           <div class="col-sm-6 center">
-            <h1 style="margin-top:1em">{{movie.original_title}}</h1>
+            
+            <h1 style="margin-top:2em">{{movie.original_title}}</h1>
             <div class="row" v-for="g in genres" :key="g.id" style="display: inline-block">
               <div class="col-sm" >
                 <p>{{g.name + "|"}} </p>
@@ -25,16 +21,17 @@
             </div>
 
             <div class="container" v-bind:style="{marginTop: '2em'}" >
+                
               <h6>Year: {{movie.release_date}}</h6>
               <h6>Budget: ~ ${{movie.budget / 1000000}} million</h6>
               <h6>Rating: {{movie.vote_average * 10}}%</h6>
             </div>
             <div class="container" v-bind:style="{marginTop: '2em'}" >
-              <div style="margin-top: 2em"><h5>Cast</h5></div>
+              <div style="margin-top: 2em"><h4>Cast</h4></div>
               <div class="row" style="display: inline-block, margin-top: 2em">
                 <div class="col-sm-3" v-for="actor in cast" :key="actor.id">                  
                   <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + actor.profile_path" style="width: 90%"/>
-                  <h6>{{actor.name}} </h6>
+                  <h5>{{actor.name}} </h5>
                 </div>
               </div>
             </div>
@@ -69,7 +66,7 @@ export default {
           this.movie = data.body;
           // console.log("image below")
           // console.log(data.body.images.backdrops);
-          this.images = data.body.images.backdrops.slice(0, 5);
+          this.images = data.body.images.backdrops.slice(0, 4);
           this.genres = data.body.genres
 
           this.$http.get('https://api.themoviedb.org/3/movie/'+this.id+'/credits?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US').then(function(data){
@@ -88,7 +85,12 @@ export default {
     },
     methods: {
       back(){
-        return this.$router.go(-1)
+         this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+this.currentPage)
+        .then(function(data) {
+          console.log(data.body)
+          this.movies = data.body.results
+          this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
+        })
       }
     },
     
