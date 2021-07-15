@@ -1,37 +1,27 @@
 <template>
-  <div>
-    
-    <h1 style="text-align: center">tv-Stop</h1>
-    <home-view></home-view>
-
+  <div id="app">
+    <Home></Home>
   </div>
 </template>
 
 <script>
-
-import homeView from './components/home.vue'
-import header from './components/header.vue';
-
+import Home from './components/Home.vue'
 
 export default {
+  name: 'App',
   components: {
-    'home-view': homeView,
-    'app-header': header ,
-  },
-  data () {
-    return {
-    }
+    Home
   }
- 
 }
 </script>
-<style scoped>
-h1{
-  display: block;
-  color: #333333;
-    max-width: 650px;
-    margin: 0 auto;
-    padding: 0 16px;
-    font-size: 59px;
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 </style>

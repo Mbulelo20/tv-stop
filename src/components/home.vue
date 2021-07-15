@@ -5,61 +5,63 @@
         <input type="text" ref="searchInput" v-model="search" style="width:330px; margin: auto"/>
       </center>
       <center>
-        <md-button style="margin: auto, margin-bottom: 3em" @click="searchMovie()">Search</md-button>
+        <button style="margin: auto, margin-bottom: 3em" @click="searchCity()">Search</button>
       </center>
     </div>
-
-    <b-container>
-      <div class="row" style="margin-bottom: 5em">
-        <div class="col-sm-4" v-for="movie in filteredMovies" :key="movie"> 
-          <router-link @click.native="clickedItem()" v-bind:to="'/movie/' + movie.id" style="color: #000000">      
-            <div class="row" style="margin-bottom: 5em">
-              <div class="col-sm-5">
-                <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + movie.poster_path" style="width:275px;">
-              </div>
-              <div class="col-sm-7" style="margin-left: -.5em">
-                <h5 class="centered">{{movie.original_title | to-uppercase}}</h5>
-                <p style="font-size:12px;" class="quickInfo">{{movie.overview | cut}}</p>
-                <p style="font-size:12px;">Released: {{movie.release_date}}</p>
-                <p style="font-size:12px, text-align: bottom">Rating: {{movie.vote_average}}</p>
-              </div>
+    <div class="row" v-for="day in forecast" :key="day"  style="display: inline-block; padding: 5px">
+        <div class="col-sm-1">
+            <div v-for="t in ts" :key="t">
+                {{t.dt}}
             </div>
-          </router-link>
+            <h6>{{day.dt}}</h6>
+            <h6>{{day.temp.max}}</h6>
+            <h6>{{day.temp.min}}</h6>
         </div>
-      </div>
-    </b-container>
-    
+    </div>
   </div>
 </template>
 
 <script>
-  import searchBar from '../mixins/searchBar'
+  
   export default {
-    name: 'home',
-
+    
     data () {
       return {
-        currentPage: '',
+        
         search: '',
-        movies: [],
+        title: 'Your Weather',
+        forecast:[],
+        coordinates: [],
+        ts: [],
+        city: ''
       }       
     },
     methods: {
-    },
+        searchCity: function() {
+          this.city = this.$refs.searchInput.value;
+            console.log("Search: "+this.city)
+        this.$http.get('https://api.mapbox.com/geocoding/v5/mapbox.places/'+this.city+'.json?access_token=pk.eyJ1IjoibWJ1bGVsbyIsImEiOiJja25rN2pxbGIwOGR3MnZvMHZhbm04c3dlIn0.D1L9umIswRGLIgDh0BpSYg')
+        .then(function(data) {
+        //   console.log(data.body.features[0].place_name)
+          console.log(data.body)
+          this.coordinates = data.body.features[0].bbox
+
+          this.$http.get('https://api.openweathermap.org/data/2.5/onecall?lat='+this.coordinates[1]+'&lon='+this.coordinates[0]+'&units=metric&exclude=hourly&appid=70f68a6a3d3e4804ac259ff1dd123f66')
+            .then(function(data) {
+            //   console.log(data.body.features[0].place_name)
+            this.forecast = data.body.daily
+            this.ts = data.body.daily.dt
+            console.log(data.body.daily)
+            
+            })
+        })
+       },
+      
+    }, 
     created() {
-    },
-   
-    filters: {
-      toUppercase(value){
-        return value.toUpperCase()
-      }, 
-      'cut': function(value){
-        return value.slice(0,300) + "..."
-      },
-    },
-    mixins: [
-        searchBar
-    ]
+    
+        
+    }, 
     
   }
   
