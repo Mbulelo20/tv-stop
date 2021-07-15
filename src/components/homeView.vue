@@ -12,7 +12,7 @@
     <b-container>
     <div class="row" style="margin-bottom: 5em; margin-top: 3em">
         <div class="col-sm-4" v-for="movie in movies" :key="movie.id"> 
-          <router-link @click.native="clickedItem()" v-bind:to="'/movie/' + movie.id" style="color: #000000">      
+          <router-link v-bind:to="'/movie/' + movie.id" style="color: #000000">      
             <div class="row" style="margin-bottom: 5em">
               <div class="col-sm-5">
                 <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + movie.poster_path" style="width:175px;">
@@ -27,6 +27,7 @@
           </router-link>
         </div>
       </div>
+      <button @click="nextPage()">NEXT</button>
       </b-container>
   </div>
 </template>
@@ -55,6 +56,14 @@
         this.$http.get('https://api.themoviedb.org/3/search/movie?api_key=9270421e43cc32ed6056cad8de3c2c67&query=' + this.search ).then(function(data) {
         // console.log("Results: " + data.body)
           this.movies = data.body.results
+        })
+      },
+      nextPage: function() {
+        this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+2)
+        .then(function(data) {
+          console.log(data.body)
+          this.movies = data.body.results
+          this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
         })
       }
     }, 
