@@ -33,56 +33,21 @@
 </template>
 
 <script>
-  import {bus} from '../main';
-  import { BContainer, VBModal } from 'bootstrap-vue'
   import searchBar from '../mixins/searchBar'
   export default {
-    name: 'RegularButtons',
-    components: { BContainer },
-    directives: { 'b-container': VBModal },
-    props: ['createdBy'],
+    name: 'home',
+
     data () {
       return {
         currentPage: '',
-        alignments: [
-          'start',
-          'center',
-          'end',
-        ],
         search: '',
-        title: 'Your Weather',
         movies: [],
       }       
     },
     methods: {
-        searchMovie: function() {
-          this.search = this.$refs.searchInput.value;
-          // console.log("Search: "+this.search)
-          this.$http.get('https://api.themoviedb.org/3/search/movie?api_key=9270421e43cc32ed6056cad8de3c2c67&query=' + this.search ).then(function(data) {
-          // console.log("Results: " + data.body)
-            this.movies = data.body.results
-          })
-       },
-    }, 
+    },
     created() {
-      this.currentPage = 1;
-      bus.$on('page', (data) => {
-        // console.log("data from bus: "+data)
-        this.currentPage = data
-        this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+this.currentPage)
-        .then(function(data) {
-          // console.log(data.body.results)
-          this.movies = data.body.results
-          this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
-        })
-      })
-      this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+ this.currentPage)
-        .then(function(data) {
-          // console.log(data.body.results)
-          this.movies = data.body.results
-          this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
-        })
-    }, 
+    },
    
     filters: {
       toUppercase(value){
