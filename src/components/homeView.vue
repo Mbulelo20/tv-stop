@@ -2,7 +2,7 @@
   <div>
     <div>
       <center>
-        <input type="text" ref="searchInput" v-model="search" style="width:330px; margin: auto"/>
+        <input type="text" ref="searchInput" v-model="search" v-on:keyup.enter="searchMovie()" style="width:330px; margin: auto"/>
       </center>
       <center>
         <button style="margin: auto, margin-bottom: 3em" @click="searchMovie()">Search</button>
@@ -12,7 +12,7 @@
     <b-container>
     <div class="row" style="margin-bottom: 5em; margin-top: 3em">
         <div class="col-sm-4" v-for="movie in movies" :key="movie.id"> 
-          <router-link v-bind:to="'/movie/' + movie.id" style="color: #000000"> 
+          <router-link v-bind:to="'/movie/' + movie.id" style="color: #000000; text-decoration: none"> 
             <a target="_blank">
             <div class="row" style="margin-bottom: 5em">
               <div class="col-sm-5">
@@ -20,7 +20,7 @@
               </div>
               <div class="col-sm-7" style=" text-align: left">
                 <h5 class="centered">{{movie.original_title | to-uppercase}}</h5>
-                <p style="font-size:12px;" class="quickInfo">{{movie.overview | cut}}</p>
+                <p style="font-size:12px; text-decoration: none" class="quickInfo">{{movie.overview | cut}}</p>
                 <p style="font-size:12px;">Released: {{movie.release_date}}</p>
                 <p style="font-size:12px, text-align: bottom">Rating: {{movie.vote_average}}</p>
               </div>
@@ -91,7 +91,7 @@
   </script>
 
 
-<style scoped>
+<style >
 
 p:hover{
   color: blue;
