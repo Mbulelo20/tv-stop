@@ -83,14 +83,12 @@ export default {
         });
         this.$http.get('https://api.themoviedb.org/3/movie/'+this.id+'?api_key=9270421e43cc32ed6056cad8de3c2c67&append_to_response=videos').then(function(data){
           this.videos = data.body.videos.results;
-          console.log(data.body)
         });
     },
     methods: {
       back(){
          this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+this.currentPage)
         .then(function(data) {
-          console.log(data.body)
           this.movies = data.body.results
           this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
         })

@@ -29,7 +29,10 @@
           </router-link>
         </div>
       </div>
+      <div style="margin-top: -3em; margin-bottom: 2em">
+        <button :disabled="currentPage==1" @click="prevPage()">BACK</button>
       <button @click="nextPage()">NEXT</button>
+      </div>
       </b-container>
   </div>
 </template>
@@ -51,9 +54,7 @@
     methods: {
       searchMovie: function() {
         this.search = this.$refs.searchInput.value;
-        // console.log("Search: "+this.search)
         this.$http.get('https://api.themoviedb.org/3/search/movie?api_key=9270421e43cc32ed6056cad8de3c2c67&query=' + this.search ).then(function(data) {
-        // console.log("Results: " + data.body)
           this.movies = data.body.results
         })
       },
@@ -61,7 +62,15 @@
         this.currentPage += 1;
         this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+ this.currentPage)
         .then(function(data) {
-          console.log(data.body)
+          this.movies = data.body.results
+          this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
+          window.scrollTo(top);
+        })
+      },
+       prevPage: function() {
+        this.currentPage -= 1;
+        this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+ this.currentPage)
+        .then(function(data) {
           this.movies = data.body.results
           this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
           window.scrollTo(top);
@@ -71,7 +80,6 @@
     created() {
       this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+this.currentPage)
         .then(function(data) {
-          console.log(data.body)
           this.movies = data.body.results
           this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
         })
