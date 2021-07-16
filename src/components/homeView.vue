@@ -42,10 +42,7 @@
       return {
         
         search: '',
-        title: 'Your Weather',
         forecast:[],
-        coordinates: [],
-        ts: [],
         city: '',
         currentPage: 1,
         movies: [],
@@ -61,11 +58,13 @@
         })
       },
       nextPage: function() {
-        this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+2)
+        this.currentPage += 1;
+        this.$http.get('https://api.themoviedb.org/3/movie/popular?api_key=9270421e43cc32ed6056cad8de3c2c67&language=en-US&page='+ this.currentPage)
         .then(function(data) {
           console.log(data.body)
           this.movies = data.body.results
           this.poster = 'https://image.tmdb.org/t/p/w500/'+data.body.results.poster_path
+          window.scrollTo(top);
         })
       }
     }, 

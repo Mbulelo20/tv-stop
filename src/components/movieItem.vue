@@ -34,19 +34,21 @@
           </div>
         </div>
       </div>
-      <div class="row" style="margin-bottom: 3em">
-        <div class="col-sm-2" v-for="(image) in images" :key="image.id" style="margin: 0px auto, width: 60%" >
-          <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + image.file_path" style="width: 95%"/>              
+      <center>
+        <div class="row" style="margin-bottom: auto">
+          <div class="col-sm-2" v-for="(image) in images" :key="image.id" style="margin: 0px auto; width: 25%" >
+            <img v-bind:src="'http://image.tmdb.org/t/p/w500/' + image.file_path" style="width: 95%"/>    
+          </div>
         </div>
-      </div>
-
-      <div class="row" v-for="v in videos" :key="v.id">
-        {{v.key}}
-        <div class="col-sm">
-          <a :href="'https://youtube.com//watch?v=' + v.key">{{v.name}}</a>
-          
+        <h2 style="margin-top: 2em;">Trailers</h2>
+        <div style="margin-bottom: 2em">
+          <div class="row" v-for="v in videos" :key="v.id">
+            <div class="col-sm">
+              <a :href="'https://youtube.com//watch?v=' + v.key" style="text-decoration: none">{{v.name}}</a>
+            </div>
+          </div>
         </div>
-      </div>
+      </center>
     </div>
   </div>
 </template>
